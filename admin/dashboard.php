@@ -25,7 +25,10 @@ $experiences = (int) $db->query('SELECT COUNT(*) FROM experience')->fetchColumn(
             <a href="projects.php">Projects</a>
             <a href="skills.php">Skills</a>
             <a href="messages.php">Messages</a>
-            <a href="logout.php">Logout</a>
+            <form action="logout.php" method="post">
+                <input type="hidden" name="csrf_token" value="<?php echo escape(getCsrfToken()); ?>">
+                <button type="submit">Logout</button>
+            </form>
         </nav>
     </header>
 
