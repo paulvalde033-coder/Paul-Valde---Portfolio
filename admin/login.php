@@ -33,26 +33,44 @@ $token = getCsrfToken();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrator Login</title>
-    <link rel="stylesheet" href="admin.css">
+    <meta name="theme-color" content="#292b46">
+    <title>Administrator Login | Paul’s Portfolio</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body class="login-page">
-    <main class="login-shell">
-        <a class="admin-brand login-brand" href="../index.php"><span class="brand-mark">P</span><span>Portfolio<span class="brand-muted"> Admin</span></span></a>
-        <section class="login-card">
-            <div class="login-art" aria-hidden="true"><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-star">✦</span><span class="art-caption">YOUR CREATIVE SPACE</span></div>
-            <div class="login-content"><p class="eyebrow">WELCOME BACK</p><h1>Sign in to your workspace</h1><p class="page-description">Manage your portfolio content and keep things fresh.</p>
-                <?php if ($error !== ''): ?><div class="notice notice-error" role="alert"><?php echo escape($error); ?></div><?php endif; ?>
-                <form class="admin-form login-form" method="post">
-                    <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-                    <label for="email">Email address<input id="email" name="email" type="email" required autocomplete="username" placeholder="you@example.com" value="<?php echo escape($_POST['email'] ?? ''); ?>"></label>
-                    <label for="password">Password<input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password"></label>
-                    <button class="button button-primary login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
-                </form>
-                <a class="back-link" href="../index.php">← Back to portfolio</a>
+    <main class="login-layout">
+        <section class="login-showcase" aria-label="Portfolio administration">
+            <a class="login-brand" href="../index.php" aria-label="Paul portfolio home"><span class="brand-mark">P</span><span>Paul<span class="brand-dot">.</span></span></a>
+            <div class="showcase-copy">
+                <span class="showcase-kicker"><span class="status-dot"></span> PORTFOLIO WORKSPACE</span>
+                <h1>Your work.<br><em>Your story.</em></h1>
+                <p>A quiet space to shape what the world sees. Keep your projects and skills beautifully up to date.</p>
             </div>
+            <div class="showcase-art" aria-hidden="true"><div class="art-circle circle-back"></div><div class="art-circle circle-mid"></div><div class="art-circle circle-front"><span>P</span></div><i class="art-spark spark-one">✳</i><i class="art-spark spark-two">✦</i><span class="art-label">DESIGN · BUILD · CREATE</span></div>
+            <p class="showcase-footer">© <?php echo date('Y'); ?> Paul Valde</p>
         </section>
-        <p class="login-footer">© <?php echo date('Y'); ?> Portfolio workspace</p>
+
+        <section class="login-panel">
+            <div class="login-content">
+                <a class="mobile-brand" href="../index.php"><span class="brand-mark">P</span><span>Paul<span class="brand-dot">.</span></span></a>
+                <div class="login-heading"><p class="eyebrow">WELCOME BACK</p><h2>Sign in</h2><p>Enter your administrator details to continue.</p></div>
+
+                <?php if ($error !== ''): ?>
+                    <div class="login-error" role="alert"><span aria-hidden="true">!</span><p><?php echo escape($error); ?></p></div>
+                <?php endif; ?>
+
+                <form class="login-form" method="post">
+                    <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap"><span aria-hidden="true">✉</span><input id="email" name="email" type="email" required autocomplete="username" placeholder="you@example.com" value="<?php echo escape($_POST['email'] ?? ''); ?>"></div>
+                    <label for="password">Password</label>
+                    <div class="input-wrap"><span aria-hidden="true">⌑</span><input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password"></div>
+                    <button class="sign-in-button" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                </form>
+                <a class="back-link" href="../index.php"><span aria-hidden="true">←</span> Back to portfolio</a>
+            </div>
+            <p class="panel-footer">Secure administrator access</p>
+        </section>
     </main>
 </body>
 </html>
