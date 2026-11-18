@@ -33,9 +33,10 @@ $token = getCsrfToken();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#292b46">
+    <meta name="theme-color" content="#17253d">
     <title>Administrator Login | Paul’s Portfolio</title>
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login-theme.css">
 </head>
 <body class="login-page">
     <main class="login-layout">
@@ -44,21 +45,16 @@ $token = getCsrfToken();
             <div class="showcase-copy">
                 <span class="showcase-kicker"><span class="status-dot"></span> PORTFOLIO WORKSPACE</span>
                 <h1>Your work.<br><em>Your story.</em></h1>
-                <p>A quiet space to shape what the world sees. Keep your projects and skills beautifully up to date.</p>
+                <p>A focused space to shape what the world sees. Keep your projects and skills beautifully up to date.</p>
             </div>
-            <div class="showcase-art" aria-hidden="true"><div class="art-circle circle-back"></div><div class="art-circle circle-mid"></div><div class="art-circle circle-front"><span>P</span></div><i class="art-spark spark-one">✳</i><i class="art-spark spark-two">✦</i><span class="art-label">DESIGN · BUILD · CREATE</span></div>
-            <p class="showcase-footer">© <?php echo date('Y'); ?> Paul Valde</p>
+            <div class="showcase-art" aria-hidden="true"><div class="art-circle circle-back"></div><div class="art-circle circle-mid"></div><div class="art-circle circle-front"><span>P</span></div><div class="art-spark spark-one">✳</div><div class="art-spark spark-two">✦</div></div>
+            <p class="showcase-footer">© <?php echo date('Y'); ?> Paul Valde <span>•</span> Portfolio workspace</p>
         </section>
-
         <section class="login-panel">
             <div class="login-content">
                 <a class="mobile-brand" href="../index.php"><span class="brand-mark">P</span><span>Paul<span class="brand-dot">.</span></span></a>
                 <div class="login-heading"><p class="eyebrow">WELCOME BACK</p><h2>Sign in</h2><p>Enter your administrator details to continue.</p></div>
-
-                <?php if ($error !== ''): ?>
-                    <div class="login-error" role="alert"><span aria-hidden="true">!</span><p><?php echo escape($error); ?></p></div>
-                <?php endif; ?>
-
+                <?php if ($error !== ''): ?><div class="login-error" role="alert"><span aria-hidden="true">!</span><p><?php echo escape($error); ?></p></div><?php endif; ?>
                 <form class="login-form" method="post">
                     <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
                     <label for="email">Email address</label>
@@ -69,7 +65,7 @@ $token = getCsrfToken();
                 </form>
                 <a class="back-link" href="../index.php"><span aria-hidden="true">←</span> Back to portfolio</a>
             </div>
-            <p class="panel-footer">Secure administrator access</p>
+            <p class="panel-footer"><span class="secure-dot"></span> Secure administrator access</p>
         </section>
     </main>
 </body>
