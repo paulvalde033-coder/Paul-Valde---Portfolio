@@ -19,35 +19,36 @@ $experiences = (int) $db->query('SELECT COUNT(*) FROM experience')->fetchColumn(
     <link rel="stylesheet" href="admin.css">
 </head>
 <body class="admin-page">
-    <header class="admin-header">
-        <a class="admin-brand" href="dashboard.php"><span class="brand-mark">P</span><span>Portfolio<span class="brand-muted"> Admin</span></span></a>
+    <aside class="sidebar">
+        <a class="admin-brand" href="dashboard.php"><span class="brand-mark">P</span><span><strong>Paul.</strong><small>Admin Panel</small></span></a>
         <nav class="admin-nav" aria-label="Admin navigation">
-            <a class="active" href="dashboard.php">Overview</a>
-            <a href="projects.php">Projects</a>
-            <a href="skills.php">Skills</a>
-            <a href="messages.php">Messages</a>
+            <a class="active" href="dashboard.php"><span>⌂</span> Overview</a>
+            <a href="projects.php"><span>▦</span> Projects</a>
+            <a href="skills.php"><span>✦</span> Skills</a>
+            <a href="messages.php"><span>✉</span> Messages</a>
         </nav>
-        <form class="logout-form" action="logout.php" method="post">
-            <input type="hidden" name="csrf_token" value="<?php echo escape(getCsrfToken()); ?>">
-            <button class="button button-quiet" type="submit">Log out <span aria-hidden="true">↗</span></button>
-        </form>
-    </header>
+        <div class="sidebar-footer">
+            <div class="mini-avatar">P</div><div><strong>Administrator</strong><small>Portfolio owner</small></div>
+            <form action="logout.php" method="post"><input type="hidden" name="csrf_token" value="<?php echo escape(getCsrfToken()); ?>"><button type="submit" title="Log out" aria-label="Log out">↗</button></form>
+        </div>
+    </aside>
 
     <main class="admin-main">
-        <div class="page-heading">
-            <div><p class="eyebrow">WORKSPACE</p><h1>Good to see you.</h1><p class="page-description">Here’s a quick overview of your portfolio content.</p></div>
-            <a class="button button-primary" href="projects.php">Manage projects <span aria-hidden="true">→</span></a>
-        </div>
-        <section class="stats-grid" aria-label="Website overview">
-            <article class="stat-card"><span class="stat-icon violet">▧</span><p class="stat-label">Projects</p><p class="stat-value"><?php echo escape($projects); ?></p><a href="projects.php">View projects <span aria-hidden="true">→</span></a></article>
-            <article class="stat-card"><span class="stat-icon blue">✳</span><p class="stat-label">Skills</p><p class="stat-value"><?php echo escape($skills); ?></p><a href="skills.php">Manage skills <span aria-hidden="true">→</span></a></article>
-            <article class="stat-card"><span class="stat-icon amber">✉</span><p class="stat-label">Messages</p><p class="stat-value"><?php echo escape($messages); ?></p><a href="messages.php">Read messages <span aria-hidden="true">→</span></a></article>
-            <article class="stat-card"><span class="stat-icon green">⌁</span><p class="stat-label">Experience</p><p class="stat-value"><?php echo escape($experiences); ?></p><span class="stat-note">Portfolio entries</span></article>
-        </section>
-        <section class="panel welcome-panel">
-            <div class="welcome-symbol" aria-hidden="true">✦</div>
-            <div><p class="eyebrow">YOUR PORTFOLIO, YOUR STORY</p><h2>Make your next update count.</h2><p>Keep your projects and skills up to date so visitors can see what you’re working on.</p></div>
-            <div class="welcome-actions"><a class="button button-primary" href="projects.php">Update projects</a><a class="text-link" href="skills.php">Edit your skills <span aria-hidden="true">→</span></a></div>
+        <header class="topbar"><div><p>OVERVIEW</p><h1>Dashboard</h1></div><a class="view-site" href="../index.php" target="_blank">View portfolio <span>↗</span></a></header>
+        <section class="dashboard-content">
+            <div class="welcome-row"><div><p class="eyebrow">YOUR WORKSPACE</p><h2>Welcome back, Paul.</h2><p>Here’s what’s happening with your portfolio today.</p></div><div class="date-card"><span>Today</span><strong><?php echo date('M j, Y'); ?></strong></div></div>
+
+            <section class="stats-grid" aria-label="Website overview">
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon projects-icon">▦</span><span class="trend">Portfolio</span></div><p>Projects</p><strong><?php echo escape($projects); ?></strong><a href="projects.php">Manage projects <span>→</span></a></article>
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon skills-icon">✦</span><span class="trend">Expertise</span></div><p>Skills</p><strong><?php echo escape($skills); ?></strong><a href="skills.php">Manage skills <span>→</span></a></article>
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon messages-icon">✉</span><span class="trend">Inbox</span></div><p>Messages</p><strong><?php echo escape($messages); ?></strong><a href="messages.php">Open inbox <span>→</span></a></article>
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon experience-icon">⌁</span><span class="trend">Profile</span></div><p>Experience</p><strong><?php echo escape($experiences); ?></strong><span class="stat-muted">Saved entries</span></article>
+            </section>
+
+            <section class="dashboard-grid">
+                <article class="feature-card"><div><p class="eyebrow">PORTFOLIO HEALTH</p><h2>Keep creating.<br>Keep growing.</h2><p>Refresh your projects and skills to help visitors understand your latest work.</p><a class="button" href="projects.php">Update portfolio <span>→</span></a></div><div class="feature-art" aria-hidden="true"><span></span><i></i><b>P</b></div></article>
+                <article class="activity-card"><div class="card-heading"><div><p class="eyebrow">SHORTCUTS</p><h2>Quick actions</h2></div></div><a href="projects.php"><span class="action-icon">＋</span><span><strong>Add project</strong><small>Share your latest work</small></span><b>›</b></a><a href="skills.php"><span class="action-icon">＋</span><span><strong>Update skill</strong><small>Improve your profile</small></span><b>›</b></a><a href="messages.php"><span class="action-icon">✉</span><span><strong>Read messages</strong><small>Check your inbox</small></span><b>›</b></a></article>
+            </section>
         </section>
     </main>
 </body>
