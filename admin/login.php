@@ -34,24 +34,25 @@ $token = getCsrfToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administrator Login</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-    <h1>Administrator Login</h1>
-
-    <?php if ($error !== ''): ?>
-        <p><?php echo escape($error); ?></p>
-    <?php endif; ?>
-
-    <form method="post">
-        <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required autocomplete="username" value="<?php echo escape($_POST['email'] ?? ''); ?>">
-
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required autocomplete="current-password">
-
-        <button type="submit">Login</button>
-    </form>
+<body class="login-page">
+    <main class="login-shell">
+        <a class="admin-brand login-brand" href="../index.php"><span class="brand-mark">P</span><span>Portfolio<span class="brand-muted"> Admin</span></span></a>
+        <section class="login-card">
+            <div class="login-art" aria-hidden="true"><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-star">✦</span><span class="art-caption">YOUR CREATIVE SPACE</span></div>
+            <div class="login-content"><p class="eyebrow">WELCOME BACK</p><h1>Sign in to your workspace</h1><p class="page-description">Manage your portfolio content and keep things fresh.</p>
+                <?php if ($error !== ''): ?><div class="notice notice-error" role="alert"><?php echo escape($error); ?></div><?php endif; ?>
+                <form class="admin-form login-form" method="post">
+                    <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
+                    <label for="email">Email address<input id="email" name="email" type="email" required autocomplete="username" placeholder="you@example.com" value="<?php echo escape($_POST['email'] ?? ''); ?>"></label>
+                    <label for="password">Password<input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password"></label>
+                    <button class="button button-primary login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                </form>
+                <a class="back-link" href="../index.php">← Back to portfolio</a>
+            </div>
+        </section>
+        <p class="login-footer">© <?php echo date('Y'); ?> Portfolio workspace</p>
+    </main>
 </body>
 </html>

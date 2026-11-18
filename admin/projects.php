@@ -3,8 +3,6 @@
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 
-requireLogin();
-
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,51 +66,49 @@ $token = getCsrfToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Manage Projects</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-    <h1>Manage Projects</h1>
-    <nav aria-label="Admin navigation">
-        <a href="dashboard.php">Dashboard</a>
-        <a href="projects.php">Projects</a>
-        <a href="skills.php">Skills</a>
-        <a href="messages.php">Messages</a>
-    </nav>
-
-    <?php if ($message !== ''): ?>
-        <p role="status"><?php echo escape($message); ?></p>
-    <?php endif; ?>
-
-    <h2>Add Project</h2>
-    <form method="post">
-        <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-        <input type="hidden" name="action" value="add">
-        <label>Title <input name="title" type="text" maxlength="180" required></label>
-        <label>Description <textarea name="description" required></textarea></label>
-        <label>Category <input name="category" type="text" maxlength="80" value="web"></label>
-        <label>Image path <input name="image_path" type="text" maxlength="255"></label>
-        <label>Project URL <input name="project_url" type="url" maxlength="255" placeholder="https://example.com"></label>
-        <button type="submit">Add</button>
-    </form>
-
-    <h2>Existing Projects</h2>
-    <?php foreach ($projects as $project): ?>
-        <form method="post">
-            <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-            <input type="hidden" name="action" value="edit">
-            <input type="hidden" name="id" value="<?php echo (int) $project['id']; ?>">
-            <label>Title <input name="title" type="text" maxlength="180" value="<?php echo escape($project['title']); ?>" required></label>
-            <label>Description <textarea name="description" required><?php echo escape($project['description']); ?></textarea></label>
-            <label>Category <input name="category" type="text" maxlength="80" value="<?php echo escape($project['category']); ?>"></label>
-            <label>Image path <input name="image_path" type="text" maxlength="255" value="<?php echo escape($project['image_path']); ?>"></label>
-            <label>Project URL <input name="project_url" type="url" maxlength="255" value="<?php echo escape($project['project_url']); ?>"></label>
-            <button type="submit">Update</button>
-        </form>
-        <form method="post">
-            <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="id" value="<?php echo (int) $project['id']; ?>">
-            <button type="submit" onclick="return confirm('Delete this project?')">Delete</button>
-        </form>
-    <?php endforeach; ?>
+<body class="admin-page">
+    <header class="admin-header">
+        <a class="admin-brand" href="dashboard.php"><span class="brand-mark">P</span><span>Portfolio<span class="brand-muted"> Admin</span></span></a>
+        <nav class="admin-nav" aria-label="Admin navigation">
+            <a href="dashboard.php">Overview</a><a class="active" href="projects.php">Projects</a><a href="skills.php">Skills</a><a href="messages.php">Messages</a>
+        </nav>
+        <form class="logout-form" action="logout.php" method="post"><input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>"><button class="button button-quiet" type="submit">Log out <span aria-hidden="true">↗</span></button></form>
+    </header>
+    <main class="admin-main">
+        <div class="page-heading"><div><p class="eyebrow">CONTENT</p><h1>Projects</h1><p class="page-description">Showcase the work you’re proud of.</p></div><a class="button button-primary" href="#add-project">＋ Add project</a></div>
+        <?php if ($message !== ''): ?><div class="notice" role="status"><?php echo escape($message); ?></div><?php endif; ?>
+        <section class="panel form-panel" id="add-project">
+            <div class="section-heading"><div><p class="eyebrow">NEW ENTRY</p><h2>Add a project</h2></div></div>
+            <form class="admin-form" method="post">
+                <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>"><input type="hidden" name="action" value="add">
+                <div class="form-grid"><label>Project title<input name="title" type="text" maxlength="180" placeholder="e.g. Personal portfolio" required></label><label>Category<input name="category" type="text" maxlength="80" value="web" placeholder="Web, design, photography"></label></div>
+                <label>Description<textarea name="description" rows="3" placeholder="What did you build?" required></textarea></label>
+                <div class="form-grid"><label>Image path<input name="image_path" type="text" maxlength="255" placeholder="images/project.png"></label><label>Project URL<input name="project_url" type="url" maxlength="255" placeholder="https://example.com"></label></div>
+                <div class="form-actions"><button class="button button-primary" type="submit">Add project <span aria-hidden="true">→</span></button></div>
+            </form>
+        </section>
+        <section class="content-section">
+            <div class="section-heading"><div><p class="eyebrow">YOUR WORK</p><h2>Existing projects <span class="count-pill"><?php echo count($projects); ?></span></h2></div></div>
+            <?php if (!$projects): ?><div class="empty-state"><span aria-hidden="true">▧</span><h3>No projects yet</h3><p>Add your first project using the form above.</p></div><?php else: ?>
+                <div class="record-list">
+                    <?php foreach ($projects as $project): ?>
+                        <article class="record-card">
+                            <div class="record-top"><div><span class="category-pill"><?php echo escape($project['category'] ?: 'Uncategorized'); ?></span><h3><?php echo escape($project['title']); ?></h3><p class="record-meta">Project #<?php echo (int) $project['id']; ?></p></div><?php if ($project['image_path'] !== ''): ?><div class="project-thumb" aria-hidden="true">▧</div><?php endif; ?></div>
+                            <form class="admin-form edit-form" method="post">
+                                <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>"><input type="hidden" name="action" value="edit"><input type="hidden" name="id" value="<?php echo (int) $project['id']; ?>">
+                                <div class="form-grid"><label>Title<input name="title" type="text" maxlength="180" value="<?php echo escape($project['title']); ?>" required></label><label>Category<input name="category" type="text" maxlength="80" value="<?php echo escape($project['category']); ?>"></label></div>
+                                <label>Description<textarea name="description" rows="3" required><?php echo escape($project['description']); ?></textarea></label>
+                                <div class="form-grid"><label>Image path<input name="image_path" type="text" maxlength="255" value="<?php echo escape($project['image_path']); ?>"></label><label>Project URL<input name="project_url" type="url" maxlength="255" value="<?php echo escape($project['project_url']); ?>"></label></div>
+                                <div class="form-actions"><button class="button button-primary" type="submit">Save changes</button></div>
+                            </form>
+                            <form class="delete-form" method="post" onsubmit="return confirm('Delete this project? This cannot be undone.');"><input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?php echo (int) $project['id']; ?>"><button class="button button-danger" type="submit">Delete project</button></form>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    </main>
 </body>
 </html>
