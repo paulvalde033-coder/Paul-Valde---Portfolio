@@ -5,6 +5,24 @@ function escape($value)
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+function isSafeExternalUrl($url)
+{
+    if (!is_string($url) || $url === '' || strlen($url) > 255) {
+        return false;
+    }
+
+    $parts = parse_url($url);
+    if ($parts === false || empty($parts['host']) || !isset($parts['scheme'])) {
+        return false;
+    }
+
+    $scheme = strtolower($parts['scheme']);
+    return in_array($scheme, ['http', 'https'], true)
+        && !isset($parts['user'])
+        && !isset($parts['pass'])
+        && filter_var($url, FILTER_VALIDATE_URL) !== false;
+}
+
 function startSession()
 {
     if (session_status() === PHP_SESSION_NONE) {

@@ -92,8 +92,8 @@ $messageStatus = $_GET['message'] ?? '';
                         <div class="body">
                             <h3><?php echo escape($project['title']); ?></h3>
                             <p><?php echo escape($project['description']); ?></p>
-                            <?php if (!empty($project['project_url'])): ?>
-                                <a class="btn" href="<?php echo escape($project['project_url']); ?>" target="_blank" rel="noopener">View project</a>
+                            <?php if (isSafeExternalUrl($project['project_url'])): ?>
+                                <a class="btn" href="<?php echo escape($project['project_url']); ?>" target="_blank" rel="noopener noreferrer">View project</a>
                             <?php endif; ?>
                         </div>
                     </article>
@@ -136,19 +136,14 @@ $messageStatus = $_GET['message'] ?? '';
 
             <form id="contact-form" class="card" action="contact.php" method="post">
                 <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-
                 <label for="name">Name</label>
                 <input id="name" name="name" type="text" minlength="2" maxlength="120" autocomplete="name" required>
-
                 <label for="email">Email</label>
                 <input id="email" name="email" type="email" maxlength="190" autocomplete="email" required>
-
                 <label for="subject">Subject</label>
                 <input id="subject" name="subject" type="text" minlength="3" maxlength="180" required>
-
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="5" minlength="10" maxlength="5000" required></textarea>
-
                 <button class="btn" type="submit">Send message</button>
             </form>
         </div>
