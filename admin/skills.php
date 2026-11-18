@@ -29,6 +29,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+        if ($action === 'edit') {
+            $id = (int) ($_POST['id'] ?? 0);
+            $name = trim($_POST['name'] ?? '');
+            $category = trim($_POST['category'] ?? '');
+            $proficiency = (int) ($_POST['proficiency'] ?? 0);
+
+            if ($id < 1 || $name === '' || $proficiency < 0 || $proficiency > 100) {
+                $message = 'Enter valid skill details.';
+            } else {
+                $statement = $db->prepare(
+                    'UPDATE skills SET name = ?, category = ?, proficiency = ? WHERE id = ?'
+                );
+                $statement->execute([$name, $category, $proficiency, $id]);
+                $message = 'Skill updated.';
+            }
+        }
+
         if ($action === 'delete') {
             $id = (int) ($_POST['id'] ?? 0);
 
@@ -81,17 +98,32 @@ $token = getCsrfToken();
 
     <h2>Existing Skills</h2>
     <?php foreach ($skills as $skill): ?>
-        <div>
-            <strong><?php echo escape($skill['name']); ?></strong>
-            - <?php echo escape($skill['proficiency']); ?>%
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="id" value="<?php echo escape($skill['id']); ?>">
 
-            <form method="post">
-                <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
-                <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="id" value="<?php echo escape($skill['id']); ?>">
-                <button type="submit" onclick="return confirm('Delete this skill?')">Delete</button>
-            </form>
-        </div>
+            <label>Name
+                <input name="name" type="text" maxlength="100" value="<?php echo escape($skill['name']); ?>" required>
+            </label>
+
+            <label>Category
+                <input name="category" type="text" maxlength="100" value="<?php echo escape($skill['category']); ?>">
+            </label>
+
+            <label>Proficiency
+                <input name="proficiency" type="number" min="0" max="100" value="<?php echo escape($skill['proficiency']); ?>" required>
+            </label>
+
+            <button type="submit">Update</button>
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="<?php echo escape($token); ?>">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="id" value="<?php echo escape($skill['id']); ?>">
+            <button type="submit" onclick="return confirm('Delete this skill?')">Delete</button>
+        </form>
     <?php endforeach; ?>
 </body>
 </html>
